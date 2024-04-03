@@ -14,11 +14,11 @@ export const User = mongoose.model("users", userSchema);
 
 export const userValidateToAdd = (checkUser) => {
     const schema = Joi.object({
-        userId: Joi.string().min(9).max(9),
+        // userId: Joi.string().min(9).max(9),
         userName: Joi.string().min(3).max(20).required(),
         password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/).required(),
-        email: Joi.string().email().required(),
-        role: Joi.string().valid('admin', 'user').insensitive(),
+        email: Joi.string().email().message("אימייל לא חוקי").required(),
+        // role: Joi.string().valid('admin', 'user').insensitive(),
         startEnterDate: Joi.date()
     });
     return schema.validate(checkUser);

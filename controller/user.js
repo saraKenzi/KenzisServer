@@ -1,54 +1,61 @@
 import { User, userValidatorForLogin, userValidateToAdd } from "../models/user.js";
 import { generateToken } from "../config/generateToken.js";
-import { hash, compare } from "bcrypt";
+import { compare } from "bcrypt";
+import bcrypt from 'bcrypt'; // Import bcrypt for password hashing
+
 
 export const addUser = async (req, res) => {
-    let validate = userValidateToAdd(req.body);//שליחת פרטי משתמש לבדיקת תקינות
+    let validate = userValidateToAdd(req.body);
     if (validate.error)
-        return res.status(400).json({ type:"error from 'addUser' function", message: validate.error.details[0].message });
-    let { userName, password, email,role } = req.body;
+        return res.status(400).json({ type:validate.error.details[0].message,message:"שגיאה בולידציה להוספת משתמש חדש" });
+
+    let { userName, password, email } = req.body;
+
     try {
-        let sameUser = await User.findOne({ userName, email });
+        const sameUser = await User.findOne({  email });
         if (sameUser)
-            return res.status(409).json({ type: "כפילות נתונים", message:err.message });
-            let hashPassword = await hash(password, 15);
-        let newUser = new User({ userName, password: hashPassword, email,role });
+            return res.status(409).json({ type: "כפילות נתונים", message: 'אימייל זה כבר קיים במערכת'});
+        let hashPassword = await bcrypt.hash(password, 15);
+
+        let newUser = new User({ userName, password: hashPassword, email });
 
         await newUser.save();
+
         let userToken = generateToken(newUser);
-        return res.json({ userToken, userName: newUser.userName, email: newUser.email })
+
+        return res.json({ userToken, userName: newUser.userName, email: newUser.email, role: newUser.role })
 
     }
     catch (err) {
-        return res.status(400).json({ type: "Error from 'catch'-> 'addUser' function", message: err.message })
+        return res.status(400).json({ type: err.message,message:"שגיאה כללית: אין אפשרות להוסיף משתמש זה" })
     }
 }
 
 export const login = async (req, res) => {
     let validate = userValidatorForLogin(req.body);
     if (validate.error)
-        return res.status(400).json({ type: "error", message: validate.error.details[0].message });
+        return res.status(400).json({ type: validate.error.details[0].message,message:"שגיאה בולידציה של כניסת משתמש" });
     try {
-        let serchSameUser = await User.findOne({ userName: req.body.userName });
+        let serchSameUser = await User.findOne({ userName: req.body.userName });//גם המייל אמור להיות זהה
         if (!serchSameUser)
-            return res.status(404).json({ type: "NOT FOUND", message: "לא קיים משתמש בשם זה, אנא הרשם למערכת" });
+            return res.status(404).json({ type: "לאא נמצא!", message: "לא קיים משתמש בשם זה, אנא הרשם למערכת" });
         else if (!await compare(req.body.password, serchSameUser.password))
-            return res.status(400).json({ type: "worng password", message: "הסיסמא שהוקשה אינה נכונה" });
+            return res.status(400).json({ type: "סיסמא שגויה!", message: "הסיסמא שהוקשה אינה נכונה" });
         let token = generateToken(serchSameUser);
-        return res.json({ token, userName: serchSameUser.userName, email: serchSameUser.email });
+        return res.json({ token, userName: serchSameUser.userName, email: serchSameUser.email, role: serchSameUser.role });
     }
     catch (err) {
         console.log(err)
-        return res.status(400).json({ type: "Error from 'catch'-> 'login' function", message: err.message });
+        return res.status(400).json({ type: err.message,message:"שגיאה כללית: אין אפשרות למשתמש זה להתחבר" });
     }
 }
 
 export const getAllUsers = async (req, res) => {
     try {
         const allUsers = await User.find({}, "-password");
-        res.json(allUsers);
+        return res.json(allUsers);
     }
     catch (err) {
-        return res.status(400).json({ type: "Error from 'catch'-> 'getAllUsers' function", message: err.message });
+        return res.status(400).json({ type: err.message,message:"שגיאה כללית: אין אפשרות לצפות ברשימת כל המשתמשים הרשומים לאתר" });
     }
 }

@@ -5,7 +5,7 @@ import Joi from "joi";
 
 const productInOrderSchema = mongoose.Schema({
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    amount: Number
+    qty: Number
 })
 const addressSchema = mongoose.Schema({
     city: String,
@@ -32,7 +32,7 @@ const Order = mongoose.model('Orders', orderSchema);
 const validateProductInOrder = (req_productInOrder) => {
     const schema = Joi.object({
         productId: Joi.string().required(),
-        amount: Joi.number().required
+        qty: Joi.number().required
     })
     return schema.validate(req_productInOrder);
 }

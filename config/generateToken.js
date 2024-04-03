@@ -7,7 +7,6 @@ let userData={
     userId:user._id,
     role:user.role
 }
-console.log("i am in token");
-const createToken=jwt.sign(userData,secretKeyJWT,{expiresIn:'55m'})
+const createToken=jwt.sign(userData,secretKeyJWT,{expiresIn:'120m'})
 return createToken;
 }

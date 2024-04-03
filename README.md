@@ -1,49 +1,56 @@
 <br/>
 
-# Cake API Documentation
+# Product API Documentation
 
 | CRUD   | Response              | Explain                 | Method | Send in Body | URL                  | Query Params    |
 |--------|-----------------------|------------------------|--------|--------------|----------------------|------------------|
-| Create | New Cake object       | Add a new cake to the system | POST   | JSON Object (see below) | /api/cakes           | N/A              |
-| Read   | List of Cakes         | Retrieve a list of all cakes | GET    | N/A          | /api/cakes           | Optional: `page`, `perPage`, `search` |
-| Read   | Single Cake by ID     | Retrieve details of a specific cake | GET    | N/A          | /api/cakes/:id       | N/A              |
-| Update | Updated Cake object   | Update an existing cake | PUT    | JSON Object (see below) | /api/cakes/:id       | N/A              |
-| Delete | Deleted Cake object   | Delete a cake from the system | DELETE | N/A          | /api/cakes/:id       | N/A              |
+| Create | New Product object       | Add a new product to the system | POST   | JSON Object (see below) | /api/products           | -----             |
+| Read   | List of Products         | Retrieve a list of all products | GET    | -----         | /api/products           | Optional: `page`, `perPage`, `search` |
+| Read   | Single Product by ID     | Retrieve details of a specific product | GET    | -----         | /api/products/:id       | -----             |
+| Update | Updated Product object   | Update an existing product | PUT    | JSON Object (see below) | /api/products/:id       | -----             |
+| Delete | Deleted Product object   | Delete a product from the system | DELETE | -----         | /api/products/:id       | -----             |
+| Read  | Number of Products       | Retrieve the number of products in the system | GET  | -----         | /api/products/countProduct | -----             |
+
 <br/>
 
 ## Functions
 
-### 1. `getAllCakes`
-Retrieve a list of cakes.
+### 1. `getAllProducts`
+Retrieve a list of products.
 
-### 2. `getCakeById`
-Retrieve details of a specific cake by ID.
+### 2. `getProductById`
+Retrieve details of a specific product by ID.
 
-### 3. `addCakes`
-Add a new cake to the system.
+### 3. `addProducts`
+Add a new product to the system.
 
-### 4. `updateCake`
-Update an existing cake.
+### 4. `updateProduct`
+Update an existing product.
 
-### 5. `deleteCakeById`
-Delete a cake from the system.
+### 5. `deleteProductById`
+Delete a product from the system.
+
+### 6. `checkNumOfProduct`
+Retrieve the number of products in the system.
+
 <br/>
 
 ## Request and Response Examples
 
-### Create (POST /api/cakes)
+### Create (POST /api/products)
 ```json
 {
-  "cakeName": "Chocolate Cake",
+  "productName": "Chocolate cake",
   "allergens": "Milk, Eggs, Nuts",
   "price": 45,
   "imgUrl": "https://example.com/chocolate-cake.jpg",
   "description": "Delicious chocolate cake",
   "heatOrCoolInstructions": "Store in a cool place",
-  "madeInDate": "2023-02-04"
+  "madeInDate": "2023-02-04",
+  "category":"cakes"
 }
 ```
-### Update Cake (PUT /api/cakes/:id)
+### Update Product (PUT /api/products/:id)
 
 ```json
 {
@@ -53,13 +60,21 @@ Delete a cake from the system.
 ```
 <br/>
 
+## Additional Notes
+In order to define a category for the product, choose one of the following options:
+<br/>
+cakes, desserts or sweets
+<br/>
+<br/>
+
+
 # User API Documentation
 
 | CRUD   | Response                          | Explain                                     | Method | Send in Body                          | URL              | Query Params    |
 |--------|-----------------------------------|---------------------------------------------|--------|----------------------------------------|------------------|------------------|
-| Create | Token and User Info               | Add a new user to the system                | POST   | JSON Object (see below)                | /api/users       | N/A              |
-| Login  | Token and User Info               | Authenticate and get a token for the user  | POST   | JSON Object (see below)                | /api/users/login | N/A              |
-| Read   | List of Users (Excluding Password)| Retrieve a list of all users                | GET    | N/A                                    | /api/users       | N/A              |
+| Create | Token and User Info               | Add a new user to the system                | POST   | JSON Object (see below)                | /api/users       | -----             |
+| Create  | Token and User Info               | Authenticate and get a token for the user  | POST   | JSON Object (see below)                | /api/users/login | -----             |
+| Read   | List of Users (Excluding Password)| Retrieve a list of all users                | GET    | -----                                   | /api/users       | -----             |
 
 <br/>
 
@@ -80,17 +95,16 @@ Retrieve a list of all users.
 ### Create User (POST /api/users)
 ```json
 {
-  "userName": "JohnDoe",
+  "userName": "sara",
   "password": "Abcd1234",
-  "email": "john@example.com",
-  "role": "user"
+  "email": "sara@example.com"
 }
 ```
 
 ### Login (POST /api/users/login)
 ```json
 {
-  "userName": "JohnDoe",
+  "userName": "sara",
   "password": "Abcd1234"
 }
 
@@ -106,11 +120,11 @@ Passwords should follow a pattern of at least 8 characters, including at least o
 
 | CRUD   | Response                  | Explain                                       | Method | Send in Body                          | URL                       | Query Params    |
 |--------|---------------------------|-----------------------------------------------|--------|----------------------------------------|---------------------------|------------------|
-| Read   | List of All Orders        | Retrieve a list of all orders                 | GET    | N/A                                    | /api/orders               | N/A              |
-| Read   | Orders by User            | Retrieve orders for a specific user            | GET    | N/A                                    | /api/orders/byUser        | N/A              |
-| Create | New Order                 | Add a new order to the system                  | POST   | JSON Object (see below)                | /api/orders               | N/A              |
-| Update | Update Order Status       | Update the status of an existing order         | PUT    | N/A                                    | /api/orders/:id           | N/A              |
-| Delete | Deleted Order              | Delete an order from the system                | DELETE | N/A                                    | /api/orders/:id           | N/A              |
+| Read   | List of All Orders        | Retrieve a list of all orders                 | GET    | -----                                   | /api/orders               | -----             |
+| Read   | Orders by User            | Retrieve orders for a specific user            | GET    | -----                                   | /api/orders/byUser        | -----             |
+| Create | New Order                 | Add a new order to the system                  | POST   | JSON Object (see below)                | /api/orders               | -----             |
+| Update | Update Order Status       | Update the status of an existing order         | PUT    | -----                                   | /api/orders/:id           | -----             |
+| Delete | Deleted Order              | Delete an order from the system                | DELETE | -----                                   | /api/orders/:id           | -----             |
 <br/>
 
 ## Functions

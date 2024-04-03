@@ -4,7 +4,7 @@ import { auth,authAdmin } from "../middlewares/auth.js";
 
 const orderRouter = express.Router();
 orderRouter.get('/',authAdmin,getAllOrders);
-orderRouter.get('/byUser', auth,getAllOrdersOfUser);
+orderRouter.get('/:id', auth,getAllOrdersOfUser);
 orderRouter.post('/',auth,addOrder);
 orderRouter.put('/:id',authAdmin,updateOrderStatus);
 orderRouter.delete('/:id', auth,deleteOrder);

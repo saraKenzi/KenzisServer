@@ -4,9 +4,10 @@ import cors from "cors";
 
 import { connectToDB } from "./config/configDB.js"
 import { errHandle } from "./middlewares/errHandle.js";
-import cakeRouter from "./routes/cake.js";
+import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
 import orderRouter from "./routes/order.js";
+import mailRouter from "./routes/mail.js";
 
 config();
 const app = express();
@@ -14,10 +15,11 @@ const app = express();
 connectToDB();
 app.use(express.json());
 app.use(cors());
-
-app.use("/api/cake", cakeRouter);
-app.use("/api/user",userRouter);
-app.use("/api/order",orderRouter)
+app.use(express.static("files"));
+app.use("/api/products", productRouter);
+app.use("/api/users",userRouter);
+app.use("/api/orders",orderRouter);
+app.use("/api/mail",mailRouter);
 app.use(errHandle);
 
 let port = process.env.PORT || 3500;
