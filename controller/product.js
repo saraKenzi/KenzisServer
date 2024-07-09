@@ -13,11 +13,11 @@ const getAllProducts = async (req, res) => {
             filter.name = new RegExp(search, 'i');
         }
 
-        const allPtoduct = await Product.find(filter)
+        const allProduct = await Product.find(filter)
             .skip((page - 1) * perPage)
             .limit(perPage);
 
-        return res.json(allPtoduct);
+        return res.json(allProduct);
     } catch (err) {
         return res.status(500).json({ type: err.message, message: "שגיאה כללית: לא ניתן להציג את כל המוצרים" });
     }

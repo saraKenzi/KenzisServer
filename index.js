@@ -7,7 +7,7 @@ import { errHandle } from "./middlewares/errHandle.js";
 import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
 import orderRouter from "./routes/order.js";
-import mailRouter from "./routes/mail.js";
+// import mailRouter from "./routes/mail.js";
 
 config();
 const app = express();
@@ -19,7 +19,7 @@ app.use(express.static("files"));
 app.use("/api/products", productRouter);
 app.use("/api/users",userRouter);
 app.use("/api/orders",orderRouter);
-app.use("/api/mail",mailRouter);
+// app.use("/api/mail",עןmailRouter);
 app.use(errHandle);
 
 let port = process.env.PORT || 3500;

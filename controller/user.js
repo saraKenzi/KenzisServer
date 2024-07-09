@@ -12,6 +12,7 @@ export const addUser = async (req, res) => {
     let { userName, password, email } = req.body;
 
     try {
+        
         const sameUser = await User.findOne({  email });
         if (sameUser)
             return res.status(409).json({ type: "כפילות נתונים", message: 'אימייל זה כבר קיים במערכת'});
@@ -36,6 +37,7 @@ export const login = async (req, res) => {
     if (validate.error)
         return res.status(400).json({ type: validate.error.details[0].message,message:"שגיאה בולידציה של כניסת משתמש" });
     try {
+        
         let serchSameUser = await User.findOne({ userName: req.body.userName });//גם המייל אמור להיות זהה
         if (!serchSameUser)
             return res.status(404).json({ type: "לאא נמצא!", message: "לא קיים משתמש בשם זה, אנא הרשם למערכת" });
